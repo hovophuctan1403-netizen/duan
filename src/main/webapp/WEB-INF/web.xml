@@ -3,9 +3,19 @@
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
    version="6.0">
+
+    <!-- Đăng ký bộ lọc chặn trực tiếp file JSP -->
+    <filter>
+        <filter-name>JspFilter</filter-name>
+        <filter-class>filter.JspFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JspFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 </web-app>

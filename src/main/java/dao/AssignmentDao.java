@@ -1,22 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
+
 import model.Assignment;
 import util.DBConnect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-/**
- *
- * @author mai09
- */
+
 public class AssignmentDao {
+
     public boolean assignTask(Assignment a) {
         String checkSql = "SELECT COUNT(*) FROM Assignment WHERE task_id = ?";
-        String updateSql = "UPDATE Assignment SET employee_id = ?, assigned_date = ? WHERE task_id = ?";
-        String insertSql = "INSERT INTO Assignment (task_id, employee_id, assigned_date) VALUES (?, ?, ?)";
+        // Sửa assigned_date -> assignedDate
+        String updateSql = "UPDATE Assignment SET employee_id = ?, assignedDate = ? WHERE task_id = ?";
+        String insertSql = "INSERT INTO Assignment (task_id, employee_id, assignedDate) VALUES (?, ?, ?)";
 
         try (Connection conn = DBConnect.getConnection()) {
             boolean exists = false;

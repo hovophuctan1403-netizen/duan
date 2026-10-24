@@ -5,124 +5,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân Công Công Việc</title>
+    <title>Phân Công Công Việc - TaskFlow Pro</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
-        .nav-pills .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+        :root {
+            --primary: #4361ee;
+            --sidebar-bg: #0f172a;
+            --sidebar-width: 270px;
         }
-        .nav-pills .nav-link.active {
-            background-color: #0d6efd !important;
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 860px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            padding: 2.25rem;
+        }
+
+        .form-select, .form-control {
+            border-radius: 0.75rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+        }
+
+        .preview-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
         }
     </style>
 </head>
-<body class="bg-light">
+<body>
 
-<!-- Navbar với nút 3 gạch nằm sát mép trái -->
-<nav class="navbar navbar-dark bg-dark mb-4 shadow-sm py-2">
-    <div class="container-fluid px-3">
-        <button class="btn btn-outline-light border-0 fs-4 me-2" type="button" 
-                data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" title="Mở danh mục">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <a class="navbar-brand fw-bold me-auto" href="${pageContext.request.contextPath}/dashboard">
-            <i class="bi bi-kanban me-2 text-primary"></i>Task Manager
+<div class="main-container">
+    <!-- Back to Dashboard -->
+    <div class="mb-4">
+        <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-light border rounded-pill px-3 py-1.5 small fw-semibold text-secondary d-inline-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i> Quay lại Bảng Điều Khiển
         </a>
     </div>
-</nav>
 
-<!-- Sidebar danh sách hàng dọc trượt ra từ bên trái -->
-<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" style="width: 270px;">
-    <div class="offcanvas-header border-bottom border-secondary py-3">
-        <h5 class="offcanvas-title fw-bold text-primary" id="sidebarMenuLabel">
-            <i class="bi bi-kanban me-2"></i>Task Manager
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    
-    <div class="offcanvas-body p-0 pt-3">
-        <div class="nav flex-column nav-pills px-3 gap-2">
-            <a class="nav-link text-white py-2 px-3 rounded d-flex align-items-center gap-3 fs-6" 
-               href="${pageContext.request.contextPath}/dashboard">
-                <i class="bi bi-speedometer2 fs-5 text-info"></i> Tổng Quan
-            </a>
-            
-            <a class="nav-link text-white py-2 px-3 rounded d-flex align-items-center gap-3 fs-6" 
-               href="${pageContext.request.contextPath}/employees">
-                <i class="bi bi-people fs-5 text-warning"></i> Nhân Viên
-            </a>
-            
-            <a class="nav-link text-white py-2 px-3 rounded d-flex align-items-center gap-3 fs-6" 
-               href="${pageContext.request.contextPath}/projects">
-                <i class="bi bi-folder2 fs-5 text-primary"></i> Dự Án
-            </a>
-            
-            <a class="nav-link text-white py-2 px-3 rounded d-flex align-items-center gap-3 fs-6" 
-               href="${pageContext.request.contextPath}/tasks">
-                <i class="bi bi-check2-square fs-5 text-success"></i> Công Việc
-            </a>
-            
-            <a class="nav-link active text-white py-2 px-3 rounded d-flex align-items-center gap-3 fs-6" 
-               href="${pageContext.request.contextPath}/assign">
-                <i class="bi bi-person-check fs-5"></i> Phân Công
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="container pb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white py-3">
-                    <h5 class="fw-bold mb-0">
-                        <i class="bi bi-person-check me-2"></i>Phân Công Việc Cho Nhân Viên
-                    </h5>
-                </div>
-                <div class="card-body p-4">
-                    <form action="${pageContext.request.contextPath}/assign" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Chọn công việc</label>
-                            <select name="taskId" class="form-select" required>
-                                <option value="" disabled selected>-- Chọn công việc --</option>
-                                <c:forEach var="t" items="${taskList}">
-                                    <option value="${t.id}">${t.taskName} (${t.projectName})</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Chọn nhân viên phụ trách</label>
-                            <select name="employeeId" class="form-select" required>
-                                <option value="" disabled selected>-- Chọn nhân viên --</option>
-                                <c:forEach var="e" items="${employeeList}">
-                                    <option value="${e.id}">${e.name} - ${e.position}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Ngày phân công</label>
-                            <input type="date" name="assignedDate" class="form-control" required>
-                        </div>
-
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2">
-                                <i class="bi bi-check-circle me-1"></i> Xác Nhận Phân Công
-                            </button>
-                            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-outline-secondary px-4 d-flex align-items-center">
-                                Quay lại
-                            </a>
-                        </div>
-                    </form>
-                </div>
+    <div class="form-card">
+        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="rounded-3 bg-primary-subtle text-primary p-3 fs-3">
+                <i class="bi bi-person-check-fill"></i>
+            </div>
+            <div>
+                <h4 class="fw-bold text-dark mb-1">Phân Công Nhân Sự</h4>
+                <p class="text-muted small mb-0">Chỉ định thành viên phụ trách và xác lập tiến độ triển khai công việc</p>
             </div>
         </div>
+
+        <form action="${pageContext.request.contextPath}/assign" method="POST">
+            <!-- 1. CHỌN NHIỆM VỤ -->
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Chọn Nhiệm Vụ Cần Giao</label>
+                <select name="taskId" id="taskSelector" class="form-select" required>
+                    <option value="">-- Danh sách nhiệm vụ đang mở --</option>
+                    <c:forEach items="${taskList}" var="t">
+                        <option value="${t.id}" data-desc="${t.description}" data-deadline="${t.deadline}">
+                            #${t.id} - ${t.taskName}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <!-- 2. CHỌN NHÂN VIÊN PHỤ TRÁCH -->
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary">Chỉ Định Nhân Sự Phụ Trách</label>
+                <select name="employeeId" id="employeeSelector" class="form-select" required>
+                    <option value="">-- Chọn thành viên phụ trách --</option>
+                    <c:forEach items="${employeeList}" var="e">
+                        <option value="${e.id}">${e.name} (ID: #${e.id})</option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <!-- 3. NGÀY PHÂN CÔNG -->
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-secondary">Ngày Bắt Đầu Phân Công</label>
+                <input type="date" name="assignedDate" id="assignDateInput" class="form-control" required>
+            </div>
+
+            <!-- SUBMIT BUTTONS -->
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-light border px-4 py-2 fw-semibold rounded-3">Hủy bỏ</a>
+                <button type="submit" class="btn btn-primary px-4 py-2 fw-bold rounded-3 shadow-sm d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-check2-circle"></i> Xác Nhận Phân Công
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Tự động gán ngày hôm nay vào ô input date
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('assignDateInput').value = today;
+    });
+</script>
 </body>
 </html>

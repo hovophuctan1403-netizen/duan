@@ -24,18 +24,26 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         String u = request.getParameter("username");
         String p = request.getParameter("password");
         String expectedRole = request.getParameter("expectedRole");
 
+        if (u != null) u = u.trim();
+        if (p != null) p = p.trim();
+
         Account acc = accountDao.checkLogin(u, p);
+
         if (acc != null) {
-            // Kiểm tra xem đăng nhập có đúng cổng vai trò đã chọn hay không
-            if (expectedRole != null && !expectedRole.isEmpty() && !expectedRole.equalsIgnoreCase(acc.getRole())) {
-                request.setAttribute("error", "Tài khoản không thuộc quyền " 
-                    + ("ADMIN".equalsIgnoreCase(expectedRole) ? "Quản Lý!" : "Nhân Viên!"));
-                request.getRequestDispatcher("/login.jsp?role=" + expectedRole).forward(request, response);
-                return;
+            // Kiểm tra phân quyền đúng cổng
+            if (expectedRole != null && !expectedRole.trim().isEmpty()) {
+                if (!expectedRole.trim().equalsIgnoreCase(acc.getRole().trim())) {
+                    String roleName = "ADMIN".equalsIgnoreCase(expectedRole) ? "Quản Lý" : "Nhân Viên";
+                    request.setAttribute("error", "Tài khoản không thuộc quyền " + roleName + "!");
+                    request.getRequestDispatcher("/login.jsp?role=" + expectedRole).forward(request, response);
+                    return;
+                }
             }
 
             HttpSession session = request.getSession();
